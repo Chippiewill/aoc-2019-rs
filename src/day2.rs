@@ -75,20 +75,19 @@ pub fn solve_part1(input: & [usize]) -> usize {
 
 #[aoc(day2, part2)]
 pub fn solve_part2(input: & [usize]) -> Option<usize> {
-	for noun in 0..100 {
-		for verb in 0..100 {
-			let mut input = input.to_vec();
-			input[1] = noun;
-			input[2] = verb;
 
+    (0..100).map(|noun| (0..100).map(move |verb| {
+		let mut input = input.to_vec();
+		input[1] = noun;
+		input[2] = verb;
 
-	        let output = IntMachine::run_program(&input, 0);
-	        if output == 19690720 {
-	        	return Some(100 * noun + verb);
-	        }
-	    }
-    }
-    None
+        let output = IntMachine::run_program(&input, 0);
+        if output == 19690720 {
+        	Some(100 * noun + verb)
+        } else {
+        	None
+        }
+    })).flatten().filter_map(|x| x).next()
 }
 
 
